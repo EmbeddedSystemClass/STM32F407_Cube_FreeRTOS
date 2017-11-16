@@ -1,0 +1,4 @@
+osThreadId defaultTaskHandle;
+osThreadId WheelDriverTaskHandle;
+osThreadId LED_Blink_TaskHandle;
+osThreadId Commuicate_TaskHandle;

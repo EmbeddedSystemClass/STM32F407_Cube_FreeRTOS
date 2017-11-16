@@ -1,0 +1,36 @@
+/* StartWheelDriverTask function */
+void StartWheelDriverTask(void const * argument)
+{
+#t/* USER CODE BEGIN StartWheelDriverTask */
+#t/* Infinite loop */
+#tfor(;;)
+#t{
+#t#tosDelay(1);
+#t}
+#t/* USER CODE END StartWheelDriverTask */
+}
+#n
+/* StartLED_Blink_Task function */
+void StartLED_Blink_Task(void const * argument)
+{
+#t/* USER CODE BEGIN StartLED_Blink_Task */
+#t/* Infinite loop */
+#tfor(;;)
+#t{
+#t#tosDelay(1);
+#t}
+#t/* USER CODE END StartLED_Blink_Task */
+}
+#n
+/* StartCommuicate_Task function */
+void StartCommuicate_Task(void const * argument)
+{
+#t/* USER CODE BEGIN StartCommuicate_Task */
+#t/* Infinite loop */
+#tfor(;;)
+#t{
+#t#tosDelay(1);
+#t}
+#t/* USER CODE END StartCommuicate_Task */
+}
+#n
