@@ -217,6 +217,38 @@ void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef* tim_baseHandle)
 } 
 
 /* USER CODE BEGIN 1 */
+/* USER CODE BEGIN 4 */  
+/** 
+  * @brief  调整PWM占空比
+  * @param  value为占空比 value=50 即收伎毡任50% 
+  * @retval None 
+  */ 
+void USER_PWM_SetDutyRatio(TIM_HandleTypeDef *htim,uint32_t Channel,uint8_t value)  
+{  
+    TIM_OC_InitTypeDef sConfigOC;  
+      
+    uint32_t period=htim->Init.Period+1;  
+    uint32_t pluse=(value * period)/100;  
+      
+    sConfigOC.OCMode = TIM_OCMODE_PWM1;  
+    sConfigOC.Pulse = pluse;  
+    sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;  
+    sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;  
+    HAL_TIM_PWM_ConfigChannel(htim, &sConfigOC, Channel);  
+    HAL_TIM_PWM_Start(htim, Channel);     
+} 
+
+
+void SetLeftWheelSpeed(uint16_t speed)
+{
+	USER_PWM_SetDutyRatio(&htim13,TIM_CHANNEL_1,speed);
+}
+
+
+void SetRightWheelSpeed(uint16_t speed)
+{
+	USER_PWM_SetDutyRatio(&htim14,TIM_CHANNEL_1,speed);
+}
 
 /* USER CODE END 1 */
 

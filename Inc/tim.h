@@ -73,6 +73,8 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 
 /* USER CODE BEGIN Prototypes */
 
+void SetLeftWheelSpeed(uint16_t speed);
+void SetRightWheelSpeed(uint16_t speed);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

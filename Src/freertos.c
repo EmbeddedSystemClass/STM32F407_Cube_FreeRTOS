@@ -48,6 +48,7 @@
 
 /* USER CODE BEGIN Includes */     
 #include "gpio.h"
+#include "tim.h"
 /* USER CODE END Includes */
 
 /* Variables -----------------------------------------------------------------*/
@@ -140,6 +141,8 @@ void StartWheelDriverTask(void const * argument)
   /* Infinite loop */
   for(;;)
   {
+		SetLeftWheelSpeed(10);
+		SetRightWheelSpeed(70);
     osDelay(1);
   }
   /* USER CODE END StartWheelDriverTask */
