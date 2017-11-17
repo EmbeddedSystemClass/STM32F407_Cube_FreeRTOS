@@ -49,6 +49,7 @@
 /* USER CODE BEGIN Includes */     
 #include "gpio.h"
 #include "tim.h"
+#include "usart.h"
 /* USER CODE END Includes */
 
 /* Variables -----------------------------------------------------------------*/
@@ -70,7 +71,16 @@ void StartCommuicate_Task(void const * argument);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
 /* USER CODE BEGIN FunctionPrototypes */
+/*
+Upload:
 
+Download:
+0xAA 0x55 1 2 3 4 0xFE
+1:Left 	Direction 0x00-> +,0x01->-
+2:Left 	Speed %
+3:Right Direction	0x00-> +,0x01->-
+4:Right Speed %
+*/
 /* USER CODE END FunctionPrototypes */
 
 /* Hook prototypes */
@@ -141,9 +151,35 @@ void StartWheelDriverTask(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-		SetLeftWheelSpeed(10);
-		SetRightWheelSpeed(70);
-    osDelay(1);
+		if(RxFinishFlag)
+		{
+			if(UART3RxBuff[2])
+			{
+				HAL_GPIO_WritePin(GPIOE, LeftDirection_Pin, GPIO_PIN_SET);
+			}
+			else
+			{
+				HAL_GPIO_WritePin(GPIOE, LeftDirection_Pin, GPIO_PIN_RESET);
+			}
+			if(UART3RxBuff[4])
+			{
+				HAL_GPIO_WritePin(GPIOE, RightDirection_Pin, GPIO_PIN_SET);
+			}
+			else
+			{
+				HAL_GPIO_WritePin(GPIOE, RightDirection_Pin, GPIO_PIN_RESET);
+			}
+			
+			SetLeftWheelSpeed(UART3RxBuff[3]);
+	
+			SetRightWheelSpeed(UART3RxBuff[5]);
+		}
+		else
+		{
+			SetLeftWheelSpeed(0);
+			SetRightWheelSpeed(0);
+		}
+    osDelay(10);
   }
   /* USER CODE END StartWheelDriverTask */
 }
@@ -155,7 +191,7 @@ void StartLED_Blink_Task(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+    osDelay(10);
   }
   /* USER CODE END StartLED_Blink_Task */
 }
@@ -167,6 +203,7 @@ void StartCommuicate_Task(void const * argument)
   /* Infinite loop */
   for(;;)
   {
+		//printf("usart is ok\r\n");
     osDelay(1);
   }
   /* USER CODE END StartCommuicate_Task */

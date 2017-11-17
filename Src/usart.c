@@ -48,7 +48,9 @@
 #include "gpio.h"
 
 /* USER CODE BEGIN 0 */
-
+uint8_t aRxBuffer;
+uint8_t UART3RxBuffCount;
+uint8_t UART3RxBuff[256];
 /* USER CODE END 0 */
 
 UART_HandleTypeDef huart4;
@@ -381,14 +383,50 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 } 
 
 /* USER CODE BEGIN 1 */
-uint8_t aRxBuffer;
-uint8_t UART1RxBuffCount;
-uint8_t UART1RxBuff[256];
+
+
+int fputc(int ch, FILE *f)
+{
+   USART3->DR=(uint8_t)ch;
+   while((USART3->SR&0X40)==0);
+   return ch;
+}
+int GetKey(void) 
+{ 
+   while (!(USART3->SR & 0x20));
+   return ((int)(USART3->DR & 0x1FF));
+}
+
+uint8_t Rxflag=0;
+uint8_t RxFinishFlag=0;
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) 
 { 
-	if(huart->Instance == USART1) 
+	if(huart->Instance == USART3) 
 	{ 
-	UART1RxBuff[UART1RxBuffCount++] = aRxBuffer; 
+		if(aRxBuffer==0xaa)
+		{
+			Rxflag = 1;
+			UART3RxBuff[UART3RxBuffCount++] = aRxBuffer;
+		}
+		else if(aRxBuffer==0x55&&Rxflag==1)
+		{
+			Rxflag = 2;
+			UART3RxBuff[UART3RxBuffCount++] = aRxBuffer; 
+		}
+		else if(Rxflag==2)
+		{
+			UART3RxBuff[UART3RxBuffCount++] = aRxBuffer; 
+		}
+		
+		if(UART3RxBuffCount>6)
+		{
+			UART3RxBuffCount = 0;
+			Rxflag=0;
+			RxFinishFlag = 1;
+			for(int i=0;i<=6;i++)
+				printf("%c",UART3RxBuff[i]);
+			printf("\r\n");
+		}
 	} 
 	HAL_UART_Receive_IT(huart, (uint8_t *)&aRxBuffer, 1) ; 
 }  

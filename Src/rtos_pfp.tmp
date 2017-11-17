@@ -1,4 +1,0 @@
-void StartDefaultTask(void const * argument);
-void StartWheelDriverTask(void const * argument);
-void StartLED_Blink_Task(void const * argument);
-void StartCommuicate_Task(void const * argument);

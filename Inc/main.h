@@ -51,6 +51,10 @@
 
 /* Private define ------------------------------------------------------------*/
 
+#define LeftDirection_Pin GPIO_PIN_5
+#define LeftDirection_GPIO_Port GPIOE
+#define RightDirection_Pin GPIO_PIN_6
+#define RightDirection_GPIO_Port GPIOE
 #define RUN_LED_Pin GPIO_PIN_11
 #define RUN_LED_GPIO_Port GPIOF
 #define H_S_LED_Pin GPIO_PIN_14

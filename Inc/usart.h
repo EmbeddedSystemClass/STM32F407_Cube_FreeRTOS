@@ -63,7 +63,8 @@ extern UART_HandleTypeDef huart3;
 extern UART_HandleTypeDef huart6;
 
 /* USER CODE BEGIN Private defines */
-
+extern uint8_t RxFinishFlag;
+extern uint8_t UART3RxBuff[256];
 /* USER CODE END Private defines */
 
 extern void Error_Handler(void);
